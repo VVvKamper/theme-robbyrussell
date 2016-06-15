@@ -23,6 +23,7 @@ function fish_prompt
   set -l red (set_color -o red)
   set -l blue (set_color -o blue)
   set -l green (set_color -o green)
+  set -l magenta (set_color -o magenta)
   set -l normal (set_color normal)
 
   if test $last_status = 0
@@ -30,6 +31,11 @@ function fish_prompt
   else
       set arrow "$red➜ "
   end
+  
+  if not set -q __fish_prompt_hostname
+    set -g __fish_prompt_hostname $magenta(hostname)
+  end
+  
   set -l cwd $cyan(basename (prompt_pwd))
 
   if [ (_git_branch_name) ]
@@ -42,6 +48,6 @@ function fish_prompt
     end
   end
 
-  echo -n -s $arrow ' ' $cwd $git_info $normal ' '
+  echo -n -s $arrow ' ' $__fish_prompt_hostname ' ' $cwd $git_info $normal ' '
 end
 
